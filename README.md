@@ -72,6 +72,65 @@ HTML-nya:
 }
 ```
 
+
+`inherits` menentukan: **apakah elemen anak otomatis ikut memakai nilai variabel yang diatur di induknya, atau tidak.**
+
+**Contoh**
+
+```html
+<div class="induk">
+  <div class="anak">Aku anak</div>
+</div>
+```
+
+```css
+.induk {
+  --warna: tomato;
+}
+.anak {
+  background-color: var(--warna);
+}
+```
+
+**Kalau `inherits: true`**
+
+```css
+@property --warna {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: lightgray;
+}
+```
+
+Induk diatur `--warna: tomato`, maka si anak **ikut mendapat** `tomato`. Hasilnya: background anak berwarna **tomato**.
+
+**Kalau `inherits: false`**
+
+```css
+@property --warna {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: lightgray;
+}
+```
+
+Nilai dari induk **tidak turun** ke anak. Anak dianggap belum diatur, jadi memakai `initial-value`. Hasilnya: background anak berwarna **lightgray**.
+
+**Analogi**
+
+Seperti warisan keluarga:
+- `inherits: true` = anak otomatis menerima warisan dari orang tuanya.
+- `inherits: false` = anak tidak menerima apa-apa, kecuali diatur sendiri. Dia mulai dari nilai awalnya (`initial-value`).
+
+**Kapan pakai yang mana?**
+
+- `true`: kalau kamu mau satu pengaturan di induk berlaku ke semua isi di dalamnya (misalnya tema warna satu halaman).
+- `false`: kalau nilainya khusus untuk satu elemen saja, dan tidak boleh bocor ke anak-anaknya (misalnya warna gradien animasi pada satu kotak).
+
+**Catatan:** variabel CSS biasa (tanpa `@property`) itu selalu mewarisi. Jadi `inherits` ini fitur baru yang memberi kamu pilihan untuk mematikannya.
+
+Coba tempel kedua versi ke file HTML, ganti `true` dan `false`, lalu lihat warna kotak anaknya berubah atau tidak. Itu cara paling cepat untuk paham.
+
 Saat di-hover, warna berubah pelan-pelan dari abu-abu ke tomato. Ini yang tidak bisa dilakukan variabel biasa.
 
 **Coba sendiri:** salin HTML dan CSS di atas ke satu file, buka di browser, lalu ubah `--warna-kotak: 2` jadi `blue` dan lihat bedanya.
